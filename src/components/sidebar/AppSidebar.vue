@@ -1,7 +1,7 @@
 <template>
-  <div class="h-screen w-60 bg-gray-800 text-white flex flex-col">
+  <div class="h-screen w-30 bg-gray-800 text-white flex flex-col">
     <div class="p-4 text-2xl font-bold border-b border-gray-700">
-      KPOS Vue
+      kPOS
     </div>
     <nav class="flex-1">
       <ul>
