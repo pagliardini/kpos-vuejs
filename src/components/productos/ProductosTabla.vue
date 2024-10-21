@@ -1,39 +1,43 @@
 <template>
-  <div class="p-6">
+  <div class="p-6" tabindex="0" @keydown="handleKeydown">
     <input
         type="text"
         v-model="searchQuery"
         placeholder="Buscar por código o nombre"
         class="mb-4 p-2 border border-gray-300 rounded"
+        @focus="inputFocused = true"
+        @blur="inputFocused = false"
     />
-    <table class="min-w-full border border-collapse">
-      <thead class="bg-gray-800 text-white">
-      <tr>
-        <th class="border px-2 py-1 text-left">Código</th>
-        <th class="border px-2 py-1 text-left">Nombre</th>
-        <th class="border px-2 py-1 text-left">Costo</th>
-        <th class="border px-2 py-1 text-left">Precio</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="producto in filteredProductos" :key="producto.id">
-        <td class="border px-2 py-1 text-left">{{ producto.codigo1 }}</td>
-        <td class="border px-2 py-1 text-left">{{ producto.nombre }}</td>
-        <td class="border px-2 py-1 text-right">{{ producto.costo }}</td>
-        <td class="border px-2 py-1 text-right">{{ producto.precio }}</td>
-      </tr>
-      </tbody>
-    </table>
+
+    <ProductosSelect
+        :productos="paginatedProductos"
+        :selectedIndex="selectedIndex"
+        @select="selectProduct"
+    />
+
+    <div class="mt-4 flex justify-between">
+      <button @click="previousPage" :disabled="currentPage === 1" class="px-4 py-1 bg-gray-800 text-white rounded">Anterior</button>
+      <button @click="nextPage" :disabled="currentPage >= totalPages" class="px-4 py-1 bg-gray-800 text-white rounded">Siguiente</button>
+    </div>
   </div>
 </template>
 
 <script>
+import ProductosSelect from './ProductosSelect.vue';
+
 export default {
   name: 'ProductosTabla',
+  components: {
+    ProductosSelect,
+  },
   data() {
     return {
       productos: [],
-      searchQuery: '', // Input model for search
+      searchQuery: '',
+      currentPage: 1,
+      itemsPerPage: 10,
+      selectedIndex: null, // Track the selected row index
+      inputFocused: false, // Track if the input is focused
     };
   },
   created() {
@@ -42,13 +46,20 @@ export default {
   computed: {
     filteredProductos() {
       if (!this.searchQuery) {
-        return this.productos; // Return all products if no search query
+        return this.productos;
       }
       const query = this.searchQuery.toLowerCase();
       return this.productos.filter((producto) =>
           producto.codigo1.toLowerCase().includes(query) ||
           producto.nombre.toLowerCase().includes(query)
       );
+    },
+    paginatedProductos() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      return this.filteredProductos.slice(start, start + this.itemsPerPage);
+    },
+    totalPages() {
+      return Math.ceil(this.filteredProductos.length / this.itemsPerPage);
     },
   },
   methods: {
@@ -64,6 +75,37 @@ export default {
       } catch (error) {
         console.error('Error fetching products:', error);
       }
+    },
+    nextPage() {
+      if (this.currentPage < this.totalPages) {
+        this.currentPage++;
+      }
+    },
+    previousPage() {
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
+    },
+    handleKeydown(event) {
+      if (event.key === 'ArrowDown') {
+        if (this.selectedIndex === null) {
+          this.selectedIndex = 0; // Start from the first row
+        } else if (this.selectedIndex < this.paginatedProductos.length - 1) {
+          this.selectedIndex++;
+        }
+      } else if (event.key === 'ArrowUp') {
+        if (this.selectedIndex > 0) {
+          this.selectedIndex--;
+        }
+      }
+
+      // Prevent default behavior when navigating with arrow keys
+      if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        event.preventDefault();
+      }
+    },
+    selectProduct(index) {
+      this.selectedIndex = index; // Update selected index when a row is clicked
     },
   },
 };
