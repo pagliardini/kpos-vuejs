@@ -1,5 +1,5 @@
 <template>
-  <div class="p-6" tabindex="0" @keydown="handleKeydown">
+  <div class="p-6" tabindex="0">
     <input
         type="text"
         v-model="searchQuery"
@@ -42,6 +42,15 @@ export default {
   },
   created() {
     this.fetchProductos();
+    window.addEventListener('keydown', this.handleKeydown); // Add global keydown listener
+  },
+  beforeUnmount() {
+    window.removeEventListener('keydown', this.handleKeydown); // Remove listener to prevent memory leaks
+  },
+  watch: {
+    searchQuery() {
+      this.resetSelection(); // Reset selection whenever the search query changes
+    },
   },
   computed: {
     filteredProductos() {
@@ -79,12 +88,17 @@ export default {
     nextPage() {
       if (this.currentPage < this.totalPages) {
         this.currentPage++;
+        this.resetSelection();
       }
     },
     previousPage() {
       if (this.currentPage > 1) {
         this.currentPage--;
+        this.resetSelection();
       }
+    },
+    resetSelection() {
+      this.selectedIndex = 0; // Reset the selected index to the first item
     },
     handleKeydown(event) {
       if (event.key === 'ArrowDown') {
@@ -97,10 +111,14 @@ export default {
         if (this.selectedIndex > 0) {
           this.selectedIndex--;
         }
+      } else if (event.key === 'ArrowRight') {
+        this.nextPage(); // Go to the next page
+      } else if (event.key === 'ArrowLeft') {
+        this.previousPage(); // Go to the previous page
       }
 
       // Prevent default behavior when navigating with arrow keys
-      if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+      if (['ArrowDown', 'ArrowUp', 'ArrowRight', 'ArrowLeft'].includes(event.key)) {
         event.preventDefault();
       }
     },
