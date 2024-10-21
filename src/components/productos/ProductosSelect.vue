@@ -7,6 +7,8 @@
         <th class="border px-2 text-left">Nombre</th>
         <th class="border px-2 text-left">Costo</th>
         <th class="border px-2 text-left">Precio</th>
+        <th class="border px-2 text-left">Stock</th>
+
       </tr>
       </thead>
       <tbody>
@@ -22,6 +24,7 @@
         <td class="border px-2 py-1 text-left">{{ producto.nombre }}</td>
         <td class="border px-2 py-1 text-right">{{ producto.costo }}</td>
         <td class="border px-2 py-1 text-right">{{ producto.precio }}</td>
+        <td class="border px-2 py-1 text-right">{{ producto.stock }}</td>
       </tr>
       </tbody>
     </table>

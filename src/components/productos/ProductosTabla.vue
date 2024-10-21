@@ -5,8 +5,9 @@
         v-model="searchQuery"
         placeholder="Buscar por código o nombre"
         class="mb-4 p-2 border border-gray-300 rounded"
-        @focus="inputFocused = true"
-        @blur="inputFocused = false"
+        ref="searchInput"
+    @focus="inputFocused = true"
+    @blur="inputFocused = false"
     />
 
     <ProductosSelect
@@ -40,6 +41,9 @@ export default {
       inputFocused: false, // Track if the input is focused
     };
   },
+  mounted() {
+    this.$refs.searchInput.focus(); // Set focus on the input when the component is mounted
+  },
   created() {
     this.fetchProductos();
     window.addEventListener('keydown', this.handleKeydown); // Add global keydown listener
@@ -49,6 +53,7 @@ export default {
   },
   watch: {
     searchQuery() {
+      this.currentPage = 1;  // Reset to the first page when a search is performed
       this.resetSelection(); // Reset selection whenever the search query changes
     },
   },
