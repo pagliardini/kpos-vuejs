@@ -1,24 +1,27 @@
 <template>
-  <div class="p-6" tabindex="0">
+  <div class="principal" tabindex="0">
+    <div class="tabla">
     <input
         type="text"
         v-model="searchQuery"
         placeholder="Buscar por código o nombre"
         class="mb-4 p-2 border border-gray-300 rounded"
         ref="searchInput"
-    @focus="inputFocused = true"
-    @blur="inputFocused = false"
+        @focus="inputFocused = true"
+        @blur="inputFocused = false"
     />
-
+    </div>
     <ProductosSelect
         :productos="paginatedProductos"
         :selectedIndex="selectedIndex"
         @select="selectProduct"
     />
 
-    <div class="mt-4 flex justify-between">
-      <button @click="previousPage" :disabled="currentPage === 1" class="px-4 py-1 bg-gray-800 text-white rounded">Anterior</button>
-      <button @click="nextPage" :disabled="currentPage >= totalPages" class="px-4 py-1 bg-gray-800 text-white rounded">Siguiente</button>
+    <div class="mt-4 w-full">
+      <div class="fixed justify-between w-20px">
+        <button @click="previousPage" :disabled="currentPage === 1" class="flex-1 px-4 py-1 bg-gray-800 text-white rounded-l">Anterior</button>
+        <button @click="nextPage" :disabled="currentPage >= totalPages" class="flex-1 px-4 py-1 bg-gray-800 text-white rounded-r">Siguiente</button>
+      </div>
     </div>
   </div>
 </template>
@@ -103,7 +106,7 @@ export default {
       }
     },
     resetSelection() {
-      this.selectedIndex = 0; // Reset the selected index to the first item
+      this.selectedIndex = null; // Reset the selected index to null
     },
     handleKeydown(event) {
       if (event.key === 'ArrowDown') {
@@ -133,3 +136,19 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.fixed-width {
+  width: 800px; /* Ancho fijo */
+}
+
+.table th, .table td {
+  height: 20px; /* Altura fija para las celdas */
+}
+
+.mt-8,
+.mt-4 {
+  margin-top: 0; /* Elimina márgenes superiores si es necesario */
+}
+
+</style>
