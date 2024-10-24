@@ -3,7 +3,7 @@ import ProductosView from "@/components/ProductosView.vue";
 import VentasView from "@/components/VentasView.vue";
 import ComprasView from "@/components/ComprasView.vue";
 import CajaView  from "@/components/CajaView.vue";
-import ProductosAgregarMod from "@/components/sidebar/ProductosAgregarMod.vue";
+import ProductosAgregarMod from "@/components/productos/ProductosAgregarMod.vue";
 
 
 const routes = [

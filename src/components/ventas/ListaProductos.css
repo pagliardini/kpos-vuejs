@@ -1,0 +1,14 @@
+/* Estilos específicos para ListaProductos */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+input[type="number"] {
+  width: 50px; /* Ajusta el tamaño del input */
+}
