@@ -10,6 +10,7 @@
           <th class="border px-2 text-left">Costo</th>
           <th class="border px-2 text-left">Precio</th>
           <th class="border px-2 text-left">Stock</th>
+          <th class="border px-2 text-left">Creado</th>
         </tr>
         </thead>
         <tbody>
@@ -26,6 +27,7 @@
           <td class="border px-2 py-1 text-right">{{ producto.costo }}</td>
           <td class="border px-2 py-1 text-right">{{ producto.precio }}</td>
           <td class="border px-2 py-1 text-right">{{ producto.stock }}</td>
+          <td class="border px-2 py-1 text-right">{{ formatDate(producto.fecha_creacion) }}</td>
         </tr>
         </tbody>
       </table>
@@ -60,6 +62,8 @@
 </template>
 
 <script>
+import './ProductosSelect.css'
+
 export default {
   name: 'ProductosSelect',
   props: {
@@ -84,59 +88,16 @@ export default {
     actionThree() {
       console.log('Acción 3 ejecutada');
     },
+    formatDate(dateString) {
+      const date = new Date(dateString);
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0'); // Los meses son de 0 a 11
+      const year = date.getFullYear();
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
+
+      return `${day}/${month}/${year} ${hours}:${minutes}`;
+    },
   },
-};
+}
 </script>
-
-<style scoped>
-.flex {
-  display: flex;
-}
-
-.flex-grow {
-  flex-grow: 1;
-}
-
-.fixed-width {
-  width: 800px;
-  table-layout: fixed;
-}
-
-.table th, .table td {
-  height: 20px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  vertical-align: middle;
-}
-
-.crud-container {
-  position: relative;
-  width: 300px;
-  min-height: 300px;
-}
-
-.crud {
-  position: sticky;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  padding-left: 1rem;
-}
-
-.crud-button {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-bottom: 1rem;
-  padding: 1rem;
-  color: white;
-  border-radius: 0.25rem;
-  width: 100%;
-  text-align: left;
-}
-
-.crud-button svg {
-  flex-shrink: 0;
-}
-</style>

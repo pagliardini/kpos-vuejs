@@ -74,7 +74,7 @@ export default {
   methods: {
     async submitForm() {
       try {
-        const response = await fetch('/productos/agregar', {
+        const response = await fetch('http://localhost:5000/productos/agregar', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

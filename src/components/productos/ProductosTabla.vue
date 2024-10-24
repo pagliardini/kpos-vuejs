@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import './ProductosTabla.css';
 import ProductosSelect from './ProductosSelect.vue';
 
 export default {
@@ -136,19 +137,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.fixed-width {
-  width: 800px; /* Ancho fijo */
-}
-
-.table th, .table td {
-  height: 20px; /* Altura fija para las celdas */
-}
-
-.mt-8,
-.mt-4 {
-  margin-top: 0; /* Elimina márgenes superiores si es necesario */
-}
-
-</style>
