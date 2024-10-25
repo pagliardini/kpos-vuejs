@@ -13,9 +13,9 @@
     <tr v-for="(producto, index) in productos" :key="index">
       <td>{{ producto.codigo }}</td>
       <td>{{ producto.nombre }}</td>
-      <td>${{ producto.precio }}</td>
+      <td>${{ producto.precio.toFixed(2) }}</td>
       <td>1</td>
-      <td></td>
+      <td>${{ (producto.precio * 1).toFixed(2) }}</td> <!-- Calcular subtotal -->
     </tr>
     </tbody>
   </table>
