@@ -4,6 +4,7 @@
     <h1 class="text-2xl font-bold">Ventas</h1>
     <InputProducto @producto-agregado="agregarProducto" />
     <ListaProductos :productos="productos" />
+    <BotonVenta></BotonVenta>
   </section>
 </template>
 
@@ -11,12 +12,14 @@
 // Importamos los componentes hijos
 import InputProducto from '@/components/ventas/InputProducto.vue';
 import ListaProductos from '@/components/ventas/ListaProductos.vue';
+import BotonVenta from "@/components/ventas/BotonVenta.vue";
 
 export default {
   name: 'VentasView',
   components: {
     InputProducto,
-    ListaProductos
+    ListaProductos,
+    BotonVenta,
   },
   data() {
     return {

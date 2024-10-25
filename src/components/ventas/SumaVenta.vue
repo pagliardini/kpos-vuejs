@@ -7,6 +7,7 @@
       placeholder="Ingresa el código del producto"
       class="border p-2"
   />
+  <button @click="buscarProducto" class="ml-2 bg-blue-500 text-white p-2">Agregar</button>
 
 </template>
 

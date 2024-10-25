@@ -1,0 +1,16 @@
+.boton-venta {
+  padding: 10px 20px;
+  background-color: #4CAF50; /* Color de fondo */
+  color: white; /* Color del texto */
+  border: none; /* Sin borde */
+  border-radius: 5px; /* Bordes redondeados */
+  cursor: pointer; /* Cambia el cursor al pasar por encima */
+
+}
+.boton-venta:hover {
+  background-color: #45a049; /* Color al pasar el mouse */
+}
+
+.boton-venta:active {
+  background-color: #3e8e41; /* Color al hacer clic */
+}
