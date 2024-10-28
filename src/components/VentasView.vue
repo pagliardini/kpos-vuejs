@@ -5,35 +5,37 @@
     <InputProducto @producto-agregado="agregarProducto" />
     <ListaProductos :productos="productos" />
     <BotonVenta></BotonVenta>
+    <suma-venta :productos="productos" />
   </section>
 </template>
 
 <script>
-// Importamos los componentes hijos
+
 import InputProducto from '@/components/ventas/InputProducto.vue';
 import ListaProductos from '@/components/ventas/ListaProductos.vue';
 import BotonVenta from "@/components/ventas/BotonVenta.vue";
+import SumaVenta from "@/components/ventas/SumaVenta.vue"
 
 export default {
   name: 'VentasView',
   components: {
+    SumaVenta,
     InputProducto,
     ListaProductos,
     BotonVenta,
   },
   data() {
     return {
-      productos: [] // Inicializamos un array vacío para almacenar los productos
+      productos: []
     };
   },
   methods: {
     agregarProducto(producto) {
-      this.productos.push(producto); // Agregamos el nuevo producto a la lista
+      this.productos.push(producto);
     }
   }
 }
 </script>
 
 <style scoped>
-/* Estilos específicos para VentasView */
 </style>

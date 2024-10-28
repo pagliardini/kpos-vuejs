@@ -66,7 +66,7 @@ export default {
         rubro_id: null,
         tipo_id: null,
       },
-      marcas: [], // Aquí se almacenarán las marcas obtenidas del backend
+      marcas: [],
       rubros: [],
       tipos: [],
     };
@@ -83,12 +83,12 @@ export default {
         });
 
         if (!response.ok) {
-          const errorText = await response.text(); // Obtén el texto de error
+          const errorText = await response.text(); // texto de error
           throw new Error(`Error ${response.status}: ${errorText}`);
         }
 
         const data = await response.json();
-        alert(data.message); // Mensaje de éxito
+        alert(data.message); //
         this.resetForm(); // Reiniciar el formulario después de agregar el producto
       } catch (error) {
         console.error('Error al agregar producto:', error);
@@ -127,11 +127,10 @@ export default {
     },
   },
   mounted() {
-    this.fetchData(); // Cargar datos de marcas al montar el componente
+    this.fetchData(); // Cargar datos de marcas al cargar el componente
   },
 };
 </script>
 
 <style scoped>
-/* Puedes agregar estilos personalizados aquí */
 </style>

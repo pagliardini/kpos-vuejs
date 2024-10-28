@@ -1,43 +1,30 @@
-<!-- InputProducto.vue -->
+<!-- SumaVenta.vue -->
 <template>
-  <input
-      type="text"
-      v-model="codigo"
-      @keyup.enter="buscarProducto"
-      placeholder="Ingresa el código del producto"
-      class="border p-2"
-  />
-  <button @click="buscarProducto" class="ml-2 bg-blue-500 text-white p-2">Agregar</button>
-
+  <div class="total-container">
+    <p>Total: ${{ total.toFixed(2) }}</p>
+  </div>
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
-  data() {
-    return {
-      codigo: ''
-    };
+  props: {
+    productos: {
+      type: Array,
+      required: true
+    }
   },
-  methods: {
-    async buscarProducto() {
-      if (this.codigo.trim()) {
-        try {
-          const response = await axios.get(`http://localhost:5000/ventas/buscar/codigo?codigo=${this.codigo}`);
-          const producto = response.data;
-          this.$emit('producto-agregado', producto); // Emitimos el objeto del producto
-          this.codigo = ''; // Limpiar el input después de agregar
-        } catch (error) {
-          console.error('Error al buscar el producto:', error);
-          // Aquí puedes manejar errores, como mostrar un mensaje al usuario
-        }
-      }
+  computed: {
+    total() {
+      // Calcula la suma de todos los subtotales de los productos
+      return this.productos.reduce((acc, producto) => acc + producto.precio, 0);
     }
   }
 }
 </script>
 
 <style scoped>
-/* Estilos específicos para InputProducto */
+.total-container {
+  font-weight: bold;
+  padding: 10px;
+}
 </style>
