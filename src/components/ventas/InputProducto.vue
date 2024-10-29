@@ -5,12 +5,14 @@
       v-model="codigo"
       @keyup.enter="buscarProducto"
       placeholder="Ingresa el código del producto"
-      class="border p-2"
+      class="input-producto"
   />
 
 </template>
 
 <script>
+
+import './InputProducto.css'
 import axios from 'axios';
 
 export default {

@@ -1,0 +1,9 @@
+.input-producto {
+  width: 100%;
+  padding: 10px 20px;
+  background-color: transparent; /* Color de fondo */
+  color: black; /* Color del texto */
+  border: 2px solid black; /* Borde de 2px, sólido y negro */
+  border-radius: 5px; /* Bordes redondeados */
+  cursor: pointer; /* Cambia el cursor al pasar por encima */
+}

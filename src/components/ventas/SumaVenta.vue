@@ -1,11 +1,10 @@
 <!-- SumaVenta.vue -->
 <template>
-  <div class="total-container">
-    <p>Total: ${{ total.toFixed(2) }}</p>
-  </div>
+    <p class="suma-venta">Total: ${{ total.toFixed(2) }}</p>
 </template>
 
 <script>
+import './SumaVenta.css'
 export default {
   props: {
     productos: {
@@ -22,9 +21,3 @@ export default {
 }
 </script>
 
-<style scoped>
-.total-container {
-  font-weight: bold;
-  padding: 10px;
-}
-</style>

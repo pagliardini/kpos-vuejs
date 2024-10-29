@@ -2,6 +2,8 @@
 table {
   width: 100%;
   border-collapse: collapse;
+  border: 2px solid black; /* Borde de 2px, sólido y negro */
+  border-radius: 5px; /* Bordes redondeados */
 }
 
 th, td {
