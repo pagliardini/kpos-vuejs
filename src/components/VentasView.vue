@@ -6,6 +6,7 @@
     <ListaProductos :productos="productos" />
     <BotonVenta></BotonVenta>
     <suma-venta :productos="productos" />
+    <flow-bite />
   </section>
 </template>
 
@@ -15,10 +16,12 @@ import InputProducto from '@/components/ventas/InputProducto.vue';
 import ListaProductos from '@/components/ventas/ListaProductos.vue';
 import BotonVenta from "@/components/ventas/BotonVenta.vue";
 import SumaVenta from "@/components/ventas/SumaVenta.vue"
+import FlowBite from "@/components/flow.vue";
 
 export default {
   name: 'VentasView',
   components: {
+    FlowBite,
     SumaVenta,
     InputProducto,
     ListaProductos,

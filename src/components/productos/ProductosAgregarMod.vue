@@ -1,22 +1,21 @@
 <template>
-  <div class="p-6">
     <h1 class="text-2xl font-bold mb-4">Agregar o Modificar Producto</h1>
     <form @submit.prevent="submitForm">
       <!-- Código, Nombre, Precio, Costo -->
-      <div class="mb-4">
-        <label for="codigo" class="block text-sm font-medium text-gray-700">Código</label>
-        <input type="text" v-model="producto.codigo" id="codigo" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
+
+      <div class="relative z-0 w-full mb-5 group">
+        <input type="text" v-model="producto.codigo" id="codigo" requiered class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+        <label for="codigo" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Codigo</label>
+      </div>
+      <div class="relative z-0 w-full mb-5 group">
+        <input type="text" v-model="producto.nombre" id="nombre" requiered class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+        <label for="nombre" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nombre</label>
+      </div>
+      <div class="relative z-0 w-full mb-5 group">
+        <input type="number" v-model="producto.precio" id="precio" requiered class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+        <label for="precio" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Precio</label>
       </div>
 
-      <div class="mb-4">
-        <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
-        <input type="text" v-model="producto.nombre" id="nombre" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
-      </div>
-
-      <div class="mb-4">
-        <label for="precio" class="block text-sm font-medium text-gray-700">Precio</label>
-        <input type="number" v-model.number="producto.precio" id="precio" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"/>
-      </div>
 
       <div class="mb-4">
         <label for="costo" class="block text-sm font-medium text-gray-700">Costo</label>
@@ -49,7 +48,6 @@
       <!-- Botón para guardar -->
       <button type="submit" class="w-full py-2 px-4 bg-blue-600 text-white rounded">Guardar Producto</button>
     </form>
-  </div>
 </template>
 
 <script>
