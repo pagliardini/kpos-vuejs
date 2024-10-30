@@ -3,14 +3,16 @@ table {
   width: 100%;
   border-collapse: collapse;
   border: 2px solid black; /* Borde de 2px, sólido y negro */
-  border-radius: 5px; /* Bordes redondeados */
 }
 
-th, td {
+th {
   text-align: left;
   padding: 8px;
+  font-size: 12px;
 }
+td {
+  padding: 3px;
+  text-align: left;
 
-input[type="number"] {
-  width: 50px; /* Ajusta el tamaño del input */
+
 }

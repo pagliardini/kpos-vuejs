@@ -1,18 +1,16 @@
-<!-- InputProducto.vue -->
 <template>
   <input
-      type="text"
-      v-model="codigo"
-      @keyup.enter="buscarProducto"
-      placeholder="Ingresa el código del producto"
-      class="input-producto"
+      ref="codigoInput"
+  type="text"
+  v-model="codigo"
+  @keyup.enter="buscarProducto"
+  placeholder="Ingresa el código del producto"
+  class="input-producto"
   />
-
 </template>
 
 <script>
-
-import './InputProducto.css'
+import './InputProducto.css';
 import axios from 'axios';
 
 export default {
@@ -34,6 +32,17 @@ export default {
           // Aquí puedes manejar errores, como mostrar un mensaje al usuario
         }
       }
+    },
+    focusInput() {
+      this.$refs.codigoInput.focus(); // Establecer foco en el input
+    }
+  },
+  mounted() {
+    this.focusInput(); // Llamar a la función para establecer el foco al montar el componente
+  },
+  watch: {
+    codigo() {
+      this.focusInput(); // Mantener el foco en el input cuando cambia el valor
     }
   }
 }

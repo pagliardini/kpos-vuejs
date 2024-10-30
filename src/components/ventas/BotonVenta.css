@@ -1,4 +1,7 @@
 .boton-venta {
+  display: flex; /* Usar flexbox para alinear elementos */
+  align-items: center; /* Centrar verticalmente */
+  justify-content: center; /* Centrar horizontalmente */
   width: 100%;
   padding: 10px 20px;
   background-color: #4CAF50; /* Color de fondo */
@@ -6,6 +9,7 @@
   border: none; /* Sin borde */
   border-radius: 5px; /* Bordes redondeados */
   cursor: pointer; /* Cambia el cursor al pasar por encima */
+  font-weight: bold;
 
 }
 .boton-venta:hover {
@@ -14,4 +18,8 @@
 
 .boton-venta:active {
   background-color: #3e8e41; /* Color al hacer clic */
+}
+
+.mr-2 {
+  margin-right: 3px; /* Espacio entre el ícono y el texto */
 }
