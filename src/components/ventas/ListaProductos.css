@@ -2,7 +2,8 @@
 table {
   width: 100%;
   border-collapse: collapse;
-  border: 2px solid black; /* Borde de 2px, sólido y negro */
+  border: 1px solid black; /* Borde de 2px, sólido y negro */
+  font-size: 16px
 }
 
 th {
