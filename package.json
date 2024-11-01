@@ -10,7 +10,6 @@
   "dependencies": {
     "axios": "^1.7.7",
     "core-js": "^3.8.3",
-    "flowbite": "^2.5.2",
     "flyonui": "^1.1.0",
     "vue": "^3.2.13",
     "vue-router": "^4.4.5"

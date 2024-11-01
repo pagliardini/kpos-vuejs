@@ -1,10 +1,14 @@
 <template>
-  <section class="p-6">
-    <h1 class="text-2xl font-bold">Ventas</h1>
-    <InputProducto @producto-agregado="agregarProducto" />
-    <ListaProductos :productos="productos" @actualizar-producto="actualizarProducto" />
-    <SumaVenta :productos="productos" />
-    <BotonVenta></BotonVenta>
+  <section class="p-6 flex">
+    <div class="izquierda">
+      <h1 class="text-2xl font-bold">Ventas</h1>
+      <InputProducto ref="inputProducto" @producto-agregado="agregarProducto" />
+      <ListaProductos :productos="productos" @actualizar-producto="actualizarProducto" />
+    </div>
+    <div class="derecha">
+      <SumaVenta :productos="productos" />
+      <BotonVenta :productos="productos" @venta-procesada="limpiarProductos" /> <!-- Escuchar el evento -->
+    </div>
   </section>
 </template>
 
@@ -31,11 +35,9 @@ export default {
     agregarProducto(producto) {
       const productoExistente = this.productos.find((p) => p.codigo === producto.codigo);
       if (productoExistente) {
-        // Si el producto ya existe, incrementa la cantidad y actualiza el subtotal
         productoExistente.cantidad += 1;
         productoExistente.subtotal = productoExistente.precio * productoExistente.cantidad;
       } else {
-        // Si es un nuevo producto, inicializa la cantidad y subtotal, y agrégalo
         producto.cantidad = 1;
         producto.subtotal = producto.precio;
         this.productos.push(producto);
@@ -45,7 +47,38 @@ export default {
       const producto = this.productos[index];
       producto.cantidad = cantidad;
       producto.subtotal = producto.precio * cantidad;
+    },
+    limpiarProductos() {
+      this.productos = []; // Limpiar la lista de productos
+      this.$refs.inputProducto.focusInput(); // Llamar al método focusInput del componente hijo
     }
+  },
+  mounted() {
+    // Establecer foco en el input al cargar la página
+    this.$refs.inputProducto.focusInput();
   }
 }
 </script>
+
+<style scoped>
+.flex {
+  display: flex;
+  height: 47vh; /* O ajusta según sea necesario */
+}
+
+.izquierda {
+  width: 66.67%; /* 2/3 de la pantalla */
+  padding: 20px;
+  box-sizing: border-box;
+
+}
+
+.derecha {
+  width: 33.33%; /* 1/3 de la pantalla */
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centra verticalmente */
+}
+</style>

@@ -4,19 +4,6 @@ table {
   border-collapse: collapse;
   border: 1px solid black; /* Borde de 2px, sólido y negro */
   font-size: 16px;
-
-}
-
-th {
-  text-align: left;
-  padding: 3px;
-  font-size: 12px;
-}
-td {
-  text-align: left;
-  color: black
-
-
 }
 
 .selected-row {

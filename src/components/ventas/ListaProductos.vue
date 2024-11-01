@@ -1,9 +1,11 @@
+<!-- ListaProductos.vue -->
+
 <template>
   <div>
     <table class="table table-striped">
       <thead>
       <tr>
-        <th>Código</th>
+        <th class="th-codigo">Código</th>
         <th>Nombre</th>
         <th>Precio</th>
         <th>Cantidad</th>
@@ -16,13 +18,13 @@
           :key="index"
           :class="{ 'selected-row': index === selectedIndex }"
       >
-        <td>{{ product.codigo }}</td>
+        <td class="td-codigo">{{ product.codigo }}</td>
         <td>{{ product.nombre }}</td>
         <td>{{ product.precio }}</td>
         <td>
           <input
               type="number"
-              class="form-control"
+              class="cantidad"
               v-model.number="product.cantidad"
               @input="$emit('actualizar-producto', index, product.cantidad)"
               :min="1"
