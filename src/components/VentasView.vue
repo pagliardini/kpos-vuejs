@@ -3,7 +3,11 @@
     <div class="izquierda">
       <h1 class="text-2xl font-bold">Ventas</h1>
       <InputProducto ref="inputProducto" @producto-agregado="agregarProducto" />
-      <ListaProductos :productos="productos" @actualizar-producto="actualizarProducto" />
+      <ListaProductos
+          :productos="productos"
+          @actualizar-producto="actualizarProducto"
+          @modal-closed="focusInput"
+      />
     </div>
     <div class="derecha">
       <SumaVenta :productos="productos" />
@@ -51,12 +55,11 @@ export default {
     limpiarProductos() {
       this.productos = []; // Limpiar la lista de productos
       this.$refs.inputProducto.focusInput(); // Llamar al método focusInput del componente hijo
+    },
+    focusInput() {
+      this.$refs.inputProducto.focusInput(); // Llamar al método focusInput del componente InputProducto
     }
   },
-  mounted() {
-    // Establecer foco en el input al cargar la página
-    this.$refs.inputProducto.focusInput();
-  }
 }
 </script>
 

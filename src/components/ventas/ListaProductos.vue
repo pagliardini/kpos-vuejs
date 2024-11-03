@@ -104,6 +104,7 @@ export default {
     },
     closeModal() {
       this.showModal = false;
+      this.$emit('modal-closed'); // Emitir un evento al cerrar el modal
     },
     updateQuantity() {
       const product = this.productos[this.selectedIndex];
