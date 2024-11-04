@@ -12,7 +12,7 @@
       <SumaVenta :productos="productos" />
       <BotonVenta :productos="productos" @venta-procesada="limpiarProductos" />
     </div>
-    <FormaCobro ref="formaCobro" /> <!-- Importar FormaCobro aquí -->
+    <FormaCobro ref="formaCobro" :totalVenta="totalVenta" />
   </section>
 </template>
 
@@ -36,6 +36,11 @@ export default {
     return {
       productos: []
     };
+  },
+  computed: {
+    totalVenta() {
+      return this.productos.reduce((acc, producto) => acc + producto.subtotal, 0);
+    }
   },
   methods: {
     agregarProducto(producto) {
