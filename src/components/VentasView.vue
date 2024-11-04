@@ -1,8 +1,7 @@
 <template>
   <section class="p-6 flex">
     <div class="izquierda">
-      <h1 class="text-2xl font-bold">Ventas</h1>
-      <InputProducto ref="inputProducto" @producto-agregado="agregarProducto" />
+      <InputProducto ref="inputProducto" @producto-agregado="agregarProducto" @abrir-modal="abrirModal" />
       <ListaProductos
           :productos="productos"
           @actualizar-producto="actualizarProducto"
@@ -11,8 +10,9 @@
     </div>
     <div class="derecha">
       <SumaVenta :productos="productos" />
-      <BotonVenta :productos="productos" @venta-procesada="limpiarProductos" /> <!-- Escuchar el evento -->
+      <BotonVenta :productos="productos" @venta-procesada="limpiarProductos" />
     </div>
+    <FormaCobro ref="formaCobro" /> <!-- Importar FormaCobro aquí -->
   </section>
 </template>
 
@@ -21,6 +21,7 @@ import InputProducto from '@/components/ventas/InputProducto.vue';
 import ListaProductos from '@/components/ventas/ListaProductos.vue';
 import BotonVenta from "@/components/ventas/BotonVenta.vue";
 import SumaVenta from "@/components/ventas/SumaVenta.vue";
+import FormaCobro from '@/components/ventas/FormaCobro.vue'; // Asegúrate de que la ruta sea correcta
 
 export default {
   name: 'VentasView',
@@ -29,6 +30,7 @@ export default {
     ListaProductos,
     BotonVenta,
     SumaVenta,
+    FormaCobro, // Registrar el componente
   },
   data() {
     return {
@@ -58,6 +60,10 @@ export default {
     },
     focusInput() {
       this.$refs.inputProducto.focusInput(); // Llamar al método focusInput del componente InputProducto
+    },
+    abrirModal() {
+      const formaCobro = this.$refs.formaCobro; // Obtener referencia a FormaCobro
+      formaCobro.abrirModal(); // Llamar al método para abrir el modal
     }
   },
 }
@@ -66,14 +72,13 @@ export default {
 <style scoped>
 .flex {
   display: flex;
-  height: 47vh; /* O ajusta según sea necesario */
+  height: 37vh; /* O ajusta según sea necesario */
 }
 
 .izquierda {
   width: 66.67%; /* 2/3 de la pantalla */
   padding: 20px;
   box-sizing: border-box;
-
 }
 
 .derecha {

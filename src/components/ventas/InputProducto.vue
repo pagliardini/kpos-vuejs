@@ -1,20 +1,23 @@
 <template>
-  <input
-      ref="codigoInput"
-      type="text"
-      v-model="codigo"
-      @keyup.enter="buscarProducto"
-      placeholder="Ingresa el código del producto"
-      class="input-producto"
-  />
+  <div>
+    <input
+        ref="codigoInput"
+        type="text"
+        v-model="codigo"
+        @keyup.enter="handleEnter"
+        placeholder="Ingresa el código del producto"
+        class="input-producto"
+    />
+  </div>
 </template>
 
 <script setup>
 import './InputProducto.css'
-import {ref, defineEmits, defineExpose} from 'vue'; // Importar defineEmits y defineExpose
+import { ref, defineEmits, defineExpose, onMounted} from 'vue';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
-const emit = defineEmits(['producto-agregado']); // Define los eventos que se van a emitir
+const emit = defineEmits(['producto-agregado', 'abrir-modal']); // Agregar el evento para abrir el modal
 const codigo = ref('');
 
 async function buscarProducto() {
@@ -22,23 +25,44 @@ async function buscarProducto() {
     try {
       const response = await axios.get(`http://localhost:5000/ventas/buscar/codigo?codigo=${codigo.value}`);
       const producto = response.data;
-      emit('producto-agregado', producto); // Emitimos el objeto del producto
+      emit('producto-agregado', producto);
       codigo.value = ''; // Limpiar el input después de agregar
     } catch (error) {
-      console.error('Error al buscar el producto:', error);
+      if (error.response && error.response.status === 404) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Código no encontrado',
+          text: `El código ingresado "${codigo.value}" no existe.`,
+        }).then(() => {
+          codigo.value = ''; // Limpiar el input después de mostrar el popup
+        });
+      } else {
+        console.error('Error al buscar el producto:', error);
+      }
     }
   }
 }
 
+function handleEnter() {
+  if (codigo.value.trim() === '') {
+    emit('abrir-modal'); // Emitir evento para abrir el modal si el input está vacío
+  } else {
+    buscarProducto(); // Si hay código, buscar producto
+  }
+}
+
 function focusInput() {
-  // Establecer foco en el input
   const inputElement = document.querySelector('input[type="text"]');
   if (inputElement) {
     inputElement.focus();
   }
 }
 
-defineExpose({focusInput}); // Exponer el método focusInput
+onMounted(() => {
+  focusInput();
+});
+
+defineExpose({focusInput});
 </script>
 
 <style scoped>
