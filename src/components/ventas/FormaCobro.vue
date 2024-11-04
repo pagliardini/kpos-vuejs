@@ -18,6 +18,7 @@ const props = defineProps({
 const paymentMethods = ref([]);
 const selectedPaymentMethod = ref(null);
 const activeIndex = ref(0);
+const changeAmount = ref(0); // Nuevo estado para el vuelto
 
 async function fetchPaymentMethods() {
   try {
@@ -56,23 +57,31 @@ async function abrirModal() {
   const result = await Swal.fire({
     title: 'Forma de Cobro',
     html: `
-      <p>Total a Pagar: ${formatCurrency(props.totalVenta)}</p>
-      <p>¿Cómo deseas proceder con el pago?</p>
+      <h1 class="total">Total a Pagar: ${formatCurrency(props.totalVenta)}</h1>
       <div tabindex="0" id="payment-container" style="outline: none;">
         <table id="payment-table" class="w-full text-left">
           <thead>
             <tr>
               <th>Denominación</th>
               <th>Recargo</th>
+              <th>Paga Con</th>
             </tr>
           </thead>
           <tbody>
-            ${paymentMethods.value.map(method => `
+            ${paymentMethods.value.map((method, index) => `
               <tr>
                 <td>${method.denominacion}</td>
                 <td>${method.recargo}</td>
+                <td>
+                  <input type="number" value="0" style="width:100%;" placeholder="Ingrese monto"
+                         data-index="${index}" class="payment-input" />
+                </td>
               </tr>
             `).join('')}
+            <tr>
+              <td><strong>Vuelto:</strong></td>
+              <td colspan="2"><span id="change-amount">${formatCurrency(changeAmount.value)}</span></td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -84,6 +93,18 @@ async function abrirModal() {
       const container = modal.querySelector('#payment-container');
       container.focus();
       container.addEventListener('keydown', handleArrowKeyNavigation);
+
+      // Agregar evento para manejar el cambio en los inputs de pago
+      const paymentInputs = modal.querySelectorAll('.payment-input');
+      paymentInputs.forEach((input, index) => {
+        input.addEventListener('input', () => {
+          const amountPaid = parseFloat(input.value) || 0;
+          const totalRecargo = paymentMethods.value[index].recargo || 0;
+          changeAmount.value = amountPaid - (props.totalVenta + totalRecargo);
+          modal.querySelector('#change-amount').textContent = formatCurrency(changeAmount.value);
+        });
+      });
+
       updateSelection();
     },
     preConfirm: () => {
@@ -121,6 +142,13 @@ function cerrarModal() {
 function confirmarPago() {
   if (selectedPaymentMethod.value) {
     console.log('Forma de pago seleccionada:', selectedPaymentMethod.value);
+
+    // Obtener los montos pagados para cada método
+    const amountsPaid = Array.from(document.querySelectorAll('.payment-input')).map(input => parseFloat(input.value) || 0);
+
+    console.log('Montos pagados:', amountsPaid);
+    console.log('Vuelto:', changeAmount.value);
+
     // Lógica para procesar el pago
   }
 }
@@ -131,5 +159,9 @@ defineExpose({ abrirModal });
 <style>
 .selected {
   background-color: #cce5ff;
+}
+
+.total {
+  font-weight: bolder;
 }
 </style>
