@@ -69,32 +69,33 @@ async function abrirModal() {
 
   const result = await Swal.fire({
     title: 'Forma de Cobro',
-    html: `
-      <h1 class="total">Total a Pagar: ${formatCurrency(props.totalVenta)}</h1>
-      <div tabindex="0" id="payment-container" style="outline: none;">
-        <table id="payment-table" class="w-full text-left">
+        html: `
+      <div class="flex justify-between items-center mb-4">
+        <h1 class="text-xl font-bold">Total a Pagar: ${formatCurrency(props.totalVenta)}</h1>
+        <div class="text-lg font-semibold">
+          <strong>Vuelto:</strong> <span id="change-amount">${formatCurrency(changeAmount.value)}</span>
+        </div>
+      </div>
+      <div tabindex="0" id="payment-container" class="outline-none">
+        <table id="payment-table" class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
           <thead>
-            <tr>
-              <th>Denominación</th>
-              <th>Recargo</th>
-              <th>Paga Con</th>
+            <tr class="bg-gray-200 text-gray-700">
+              <th class="py-2 px-4 border-b">Denominación</th>
+              <th class="py-2 px-3 border-b">Recargo</th>
+              <th class="py-2 px-4 border-b">Paga Con</th>
             </tr>
           </thead>
           <tbody>
             ${paymentMethods.value.map((method, index) => `
-              <tr>
-                <td>${method.denominacion}</td>
-                <td>${method.recargo}</td>
-                <td>
+              <tr class="hover:bg-gray-100 transition duration-200">
+                <td class="py-2 px-4 border-b">${method.denominacion}</td>
+                <td class="py-2 px-4 border-b">${method.recargo}</td>
+                <td class="py-2 px-4 border-b">
                   <input type="number" value="0" style="width:100%;" placeholder="Ingrese monto"
-                         data-index="${index}" class="payment-input" />
+                         data-index="${index}" class="payment-input border rounded-md p-1" />
                 </td>
               </tr>
             `).join('')}
-            <tr>
-              <td><strong>Vuelto:</strong></td>
-              <td colspan="2"><span id="change-amount">${formatCurrency(changeAmount.value)}</span></td>
-            </tr>
           </tbody>
         </table>
       </div>
