@@ -4,7 +4,7 @@
 </template>
 
 <script setup>
-import { ref, defineExpose, defineProps } from 'vue';
+import {ref, defineExpose, defineProps} from 'vue';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 
@@ -46,12 +46,22 @@ function updateSelection() {
   selectedPaymentMethod.value = paymentMethods.value[activeIndex.value];
   const rows = document.querySelectorAll('.swal2-html-container #payment-table tbody tr');
 
+  // Calcular el recargo para actualizar el total
+  const recargo = paymentMethods.value[activeIndex.value].recargo || 0; // Obtiene el recargo
+  const totalConRecargo = props.totalVenta * (1 + recargo / 100); // Calcula el total con recargo
+
+  // Actualizar el h1 con el nuevo total
+  const totalElement = document.querySelector('.total-pagar');
+  if (totalElement) {
+    totalElement.textContent = `Total a Pagar: ${formatCurrency(totalConRecargo)}`;
+  }
+
   rows.forEach((row, index) => {
     const input = row.querySelector('.payment-input');
 
     if (input) { // Verifica que el input exista
       if (index === activeIndex.value) {
-        input.value = props.totalVenta; // Asigna el total al input seleccionado
+        input.value = totalConRecargo.toFixed(2); // Asigna el total con recargo al input seleccionado
         input.focus();
         input.select(); // Seleccionar el contenido del input
       } else {
@@ -69,9 +79,9 @@ async function abrirModal() {
 
   const result = await Swal.fire({
     title: 'Forma de Cobro',
-        html: `
+    html: `
       <div class="flex justify-between items-center mb-4">
-        <h1 class="text-xl font-bold">Total a Pagar: ${formatCurrency(props.totalVenta)}</h1>
+        <h1 class="text-xl font-bold total-pagar">Total a Pagar: ${formatCurrency(props.totalVenta)}</h1>
         <div class="text-lg font-semibold">
           <strong>Vuelto:</strong> <span id="change-amount">${formatCurrency(changeAmount.value)}</span>
         </div>
@@ -81,7 +91,7 @@ async function abrirModal() {
           <thead>
             <tr class="bg-gray-200 text-gray-700">
               <th class="py-2 px-4 border-b">Denominación</th>
-              <th class="py-2 px-3 border-b">Recargo</th>
+              <th class="py-2 px-4 border-b">Recargo</th>
               <th class="py-2 px-4 border-b">Paga Con</th>
             </tr>
           </thead>
@@ -89,7 +99,7 @@ async function abrirModal() {
             ${paymentMethods.value.map((method, index) => `
               <tr class="hover:bg-gray-100 transition duration-200">
                 <td class="py-2 px-4 border-b">${method.denominacion}</td>
-                <td class="py-2 px-4 border-b">${method.recargo}</td>
+                <td class="py-2 px-4 border-b">${method.recargo}%</td>
                 <td class="py-2 px-4 border-b">
                   <input type="number" value="0" style="width:100%;" placeholder="Ingrese monto"
                          data-index="${index}" class="payment-input border rounded-md p-1" />
@@ -114,7 +124,7 @@ async function abrirModal() {
         input.addEventListener('input', () => {
           const amountPaid = parseFloat(input.value) || 0;
           const totalRecargo = paymentMethods.value[index].recargo || 0;
-          changeAmount.value = amountPaid - (props.totalVenta + totalRecargo);
+          changeAmount.value = amountPaid - (props.totalVenta * (1 + totalRecargo / 100));
           modal.querySelector('#change-amount').textContent = formatCurrency(changeAmount.value);
         });
       });
@@ -145,7 +155,7 @@ async function abrirModal() {
 }
 
 function formatCurrency(value) {
-  const options = { minimumFractionDigits: 2, maximumFractionDigits: 2 };
+  const options = {minimumFractionDigits: 2, maximumFractionDigits: 2};
   return new Intl.NumberFormat('es-CO', options).format(value);
 }
 
@@ -167,7 +177,7 @@ function confirmarPago() {
   }
 }
 
-defineExpose({ abrirModal });
+defineExpose({abrirModal});
 </script>
 
 <style>
