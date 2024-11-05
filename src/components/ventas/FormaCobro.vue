@@ -47,6 +47,12 @@ function updateSelection() {
   const rows = document.querySelectorAll('.swal2-html-container #payment-table tbody tr');
   rows.forEach((row, index) => {
     row.classList.toggle('selected', index === activeIndex.value);
+    // Seleccionar el input correspondiente
+    const input = row.querySelector('.payment-input');
+    if (index === activeIndex.value) {
+      input.focus();
+      input.select(); // Seleccionar el contenido del input
+    }
   });
 }
 
@@ -73,7 +79,7 @@ async function abrirModal() {
                 <td>${method.denominacion}</td>
                 <td>${method.recargo}</td>
                 <td>
-                  <input type="number" value="0" style="width:100%;" placeholder="Ingrese monto"
+                  <input type="number" value="${props.totalVenta}" style="width:100%;" placeholder="Ingrese monto"
                          data-index="${index}" class="payment-input" />
                 </td>
               </tr>
