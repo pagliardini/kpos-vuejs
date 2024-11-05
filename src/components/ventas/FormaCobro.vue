@@ -4,7 +4,7 @@
 </template>
 
 <script setup>
-import {ref, defineExpose, defineProps} from 'vue';
+import { ref, defineExpose, defineProps } from 'vue';
 import Swal from 'sweetalert2';
 import axios from 'axios';
 
@@ -71,6 +71,22 @@ function updateSelection() {
 
     row.classList.toggle('selected', index === activeIndex.value);
   });
+
+  // Recalcular el vuelto al cambiar de método de pago
+  recalculateChange();
+}
+
+function recalculateChange() {
+  const activeInput = document.querySelector('.payment-input:focus');
+  if (activeInput) {
+    const amountPaid = parseFloat(activeInput.value) || 0;
+    const recargo = paymentMethods.value[activeIndex.value].recargo || 0;
+    changeAmount.value = amountPaid - (props.totalVenta * (1 + recargo / 100));
+    const changeElement = document.querySelector('#change-amount');
+    if (changeElement) {
+      changeElement.textContent = formatCurrency(changeAmount.value);
+    }
+  }
 }
 
 async function abrirModal() {
@@ -101,7 +117,7 @@ async function abrirModal() {
                 <td class="py-2 px-4 border-b">${method.denominacion}</td>
                 <td class="py-2 px-4 border-b">${method.recargo}%</td>
                 <td class="py-2 px-4 border-b">
-                  <input type="number" value="0" style="width:100%;" placeholder="Ingrese monto"
+                  <input type="number" value="${props.totalVenta * (1 + method.recargo / 100)}" style="width:100%;" placeholder="Ingrese monto"
                          data-index="${index}" class="payment-input border rounded-md p-1" />
                 </td>
               </tr>
@@ -125,6 +141,12 @@ async function abrirModal() {
           const amountPaid = parseFloat(input.value) || 0;
           const totalRecargo = paymentMethods.value[index].recargo || 0;
           changeAmount.value = amountPaid - (props.totalVenta * (1 + totalRecargo / 100));
+          modal.querySelector('#change-amount').textContent = formatCurrency(changeAmount.value);
+        });
+
+        // Resetear valor del vuelto al cambiar de método
+        input.addEventListener('focus', () => {
+          changeAmount.value = parseFloat(input.value) - (props.totalVenta * (1 + paymentMethods.value[index].recargo / 100));
           modal.querySelector('#change-amount').textContent = formatCurrency(changeAmount.value);
         });
       });
@@ -155,7 +177,7 @@ async function abrirModal() {
 }
 
 function formatCurrency(value) {
-  const options = {minimumFractionDigits: 2, maximumFractionDigits: 2};
+  const options = { minimumFractionDigits: 2, maximumFractionDigits: 2 };
   return new Intl.NumberFormat('es-CO', options).format(value);
 }
 
@@ -177,7 +199,7 @@ function confirmarPago() {
   }
 }
 
-defineExpose({abrirModal});
+defineExpose({ abrirModal });
 </script>
 
 <style>
@@ -185,7 +207,7 @@ defineExpose({abrirModal});
   background-color: #cce5ff;
 }
 
-.total {
+.total-pagar {
   font-weight: bolder;
 }
 </style>
