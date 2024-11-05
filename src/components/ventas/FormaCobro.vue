@@ -12,6 +12,10 @@ const props = defineProps({
   totalVenta: {
     type: Number,
     required: true,
+  },
+  productos: {
+    type: Array,
+    required: true,
   }
 });
 
@@ -170,9 +174,40 @@ async function abrirModal() {
   });
 
   if (result.isConfirmed) {
-    confirmarPago();
+    await procesarVenta(); // Llama a la función para procesar la venta
   } else {
     cerrarModal();
+  }
+}
+
+async function procesarVenta() {
+  if (!selectedPaymentMethod.value) return;
+
+  try {
+    const response = await axios.post('http://localhost:5000/ventas/procesar', {
+      productos: props.productos, // Asegúrate de que este prop contenga los productos seleccionados
+      forma_cobro_id: selectedPaymentMethod.value.id, // ID de la forma de cobro seleccionada
+    });
+
+    console.log('Venta procesada:', response.data);
+
+    Swal.fire({
+      title: 'Éxito',
+      text: 'La venta se ha procesado correctamente.',
+      icon: 'success'
+    });
+
+    cerrarModal(); // Cerrar modal después de procesar
+  } catch (error) {
+    console.error('Error al procesar la venta:', error);
+
+    Swal.fire({
+      title: 'Error',
+      text: 'No se pudo procesar la venta. Inténtalo nuevamente.',
+      icon: 'error'
+    });
+
+    cerrarModal(); // También puedes cerrar el modal aquí si lo deseas
   }
 }
 
@@ -183,20 +218,6 @@ function formatCurrency(value) {
 
 function cerrarModal() {
   selectedPaymentMethod.value = null;
-}
-
-function confirmarPago() {
-  if (selectedPaymentMethod.value) {
-    console.log('Forma de pago seleccionada:', selectedPaymentMethod.value);
-
-    // Obtener los montos pagados para cada método
-    const amountsPaid = Array.from(document.querySelectorAll('.payment-input')).map(input => parseFloat(input.value) || 0);
-
-    console.log('Montos pagados:', amountsPaid);
-    console.log('Vuelto:', changeAmount.value);
-
-    // Lógica para procesar el pago
-  }
 }
 
 defineExpose({ abrirModal });

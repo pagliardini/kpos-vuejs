@@ -12,7 +12,7 @@
       <SumaVenta :productos="productos" />
       <BotonVenta :productos="productos" @venta-procesada="limpiarProductos" />
     </div>
-    <FormaCobro ref="formaCobro" :totalVenta="totalVenta" />
+    <FormaCobro ref="formaCobro" :totalVenta="totalVenta" @confirm-payment="procesarVenta" :productos="productos" />
   </section>
 </template>
 
@@ -22,6 +22,8 @@ import ListaProductos from '@/components/ventas/ListaProductos.vue';
 import BotonVenta from "@/components/ventas/BotonVenta.vue";
 import SumaVenta from "@/components/ventas/SumaVenta.vue";
 import FormaCobro from '@/components/ventas/FormaCobro.vue'; // Asegúrate de que la ruta sea correcta
+import axios from "axios";
+import Swal from "sweetalert2";
 
 export default {
   name: 'VentasView',
@@ -69,6 +71,32 @@ export default {
     abrirModal() {
       const formaCobro = this.$refs.formaCobro; // Obtener referencia a FormaCobro
       formaCobro.abrirModal(); // Llamar al método para abrir el modal
+    },
+    async procesarVenta(data) {
+      try {
+        const response = await axios.post('http://localhost:5000/ventas/procesar', {
+          productos: data.productos,
+          forma_cobro_id: data.formaCobroId,
+        });
+
+        console.log('Venta procesada:', response.data);
+
+        Swal.fire({
+          title: 'Éxito',
+          text: 'La venta se ha procesado correctamente.',
+          icon: 'success'
+        });
+
+        this.limpiarProductos(); // Limpiar productos después de procesar
+      } catch (error) {
+        console.error('Error al procesar la venta:', error);
+
+        Swal.fire({
+          title: 'Error',
+          text: 'No se pudo procesar la venta. Inténtalo nuevamente.',
+          icon: 'error'
+        });
+      }
     }
   },
 }
