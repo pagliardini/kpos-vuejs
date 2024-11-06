@@ -1,5 +1,3 @@
-<!-- ListaProductos.vue -->
-
 <template>
   <div>
     <table class="table table-striped">
@@ -42,11 +40,11 @@
         <h2>Ingresa la nueva cantidad</h2>
         <input
             type="text"
-        v-model="newQuantity"
-        placeholder="Cantidad"
-        class="form-control"
-        ref="quantityInput"
-        @keyup.enter="updateQuantity"
+            v-model="newQuantity"
+            placeholder="Cantidad"
+            class="form-control"
+            ref="quantityInput"
+            @keyup.enter="updateQuantity"
         />
         <button class="btn btn-primary" @click="updateQuantity">Actualizar</button>
       </div>
@@ -89,8 +87,11 @@ export default {
       } else if (event.key === 'ArrowUp') {
         this.selectPrevious();
       } else if (event.key === '*') {
-        event.preventDefault(); // Evitar el comportamiento predeterminado
+        event.preventDefault();
         this.openModal();
+      } else if (event.key === 'Delete') { // Detectar Supr o Backspace
+        event.preventDefault(); // Evitar el comportamiento predeterminado
+        this.deleteProduct(); // Llamar al método para eliminar el producto
       }
     },
     openModal() {
@@ -99,24 +100,37 @@ export default {
 
       this.$nextTick(() => {
         this.$refs.quantityInput.focus();
-        this.$refs.quantityInput.select(); // Seleccionar el texto del input
+        this.$refs.quantityInput.select();
       });
     },
     closeModal() {
       this.showModal = false;
-      this.$emit('modal-closed'); // Emitir un evento al cerrar el modal
+      this.$emit('modal-closed');
     },
     updateQuantity() {
       const product = this.productos[this.selectedIndex];
       if (product) {
         const parsedQuantity = parseInt(this.newQuantity, 10);
         if (!isNaN(parsedQuantity)) {
-          product.cantidad = parsedQuantity; // Actualiza la cantidad
-          product.subtotal = product.precio * parsedQuantity; // Actualiza el subtotal
-          this.$emit('actualizar-producto', this.selectedIndex, product.cantidad); // Emite el evento
+          product.cantidad = parsedQuantity;
+          product.subtotal = product.precio * parsedQuantity;
+          this.$emit('actualizar-producto', this.selectedIndex, product.cantidad);
         }
       }
-      this.closeModal(); // Cierra el modal
+      this.closeModal();
+    },
+    deleteProduct() {
+      // Emitir un evento al componente padre para eliminar el producto
+      if (this.productos.length > 0 && this.selectedIndex >= 0) {
+        this.$emit('eliminar-producto', this.selectedIndex);
+
+        // Ajustar el índice seleccionado si es necesario
+        if (this.selectedIndex >= this.productos.length) {
+          this.selectedIndex = this.productos.length - 1; // Seleccionar el último producto si se eliminó el actual
+        } else if (this.productos.length === 0) {
+          this.selectedIndex = -1; // No hay productos, restablecer índice
+        }
+      }
     },
   },
   mounted() {

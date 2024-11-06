@@ -1,0 +1,21 @@
+.boton-cancelar {
+    display: flex; /* Usar flexbox para alinear elementos */
+    align-items: center; /* Centrar verticalmente */
+    justify-content: center; /* Centrar horizontalmente */
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #db3545; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none; /* Sin borde */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    font-weight: bold;
+    border-radius: 5px;
+
+}
+.boton-cancelar:hover {
+    background-color: #c72333; /* Color al pasar el mouse */
+}
+
+.boton-cancelar:active {
+    background-color: #bc2130; /* Color al hacer clic */
+}

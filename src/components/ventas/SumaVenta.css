@@ -1,11 +1,12 @@
 /* Estilos específicos para ListaProductos */
 .suma-venta {
-  font-size: 30px;
+  font-size: 45px;
   color: #0066b3;
   background-color: rgba(0, 0, 0, 0);
   font-weight: bold;
   padding: 30px;
   text-align: center;
-  border: 1px solid black ;
+  border: 1px blue ;
+  border-radius: 5px;
 }
 

@@ -207,8 +207,7 @@ async function procesarVenta() {
 
 
     Swal.fire({
-      title: 'Éxito',
-      text: 'La venta se ha procesado correctamente.',
+      title: 'La venta se ha procesado correctamente.',
       icon: 'success'
     });
 
