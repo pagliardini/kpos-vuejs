@@ -4,9 +4,11 @@
 </template>
 
 <script setup>
-import { ref, defineExpose, defineProps } from 'vue';
+import { ref, defineExpose, defineProps, defineEmits } from 'vue';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+
+const emit = defineEmits(['venta-procesada']);
 
 const props = defineProps({
   totalVenta: {
@@ -138,6 +140,9 @@ async function abrirModal() {
       container.focus();
       container.addEventListener('keydown', handleArrowKeyNavigation);
 
+      // Agregar el evento de tecla Enter para confirmar pago
+      container.addEventListener('keydown', handleEnterKey);
+
       // Agregar evento para manejar el cambio en los inputs de pago
       const paymentInputs = modal.querySelectorAll('.payment-input');
       paymentInputs.forEach((input, index) => {
@@ -169,6 +174,7 @@ async function abrirModal() {
       const container = document.querySelector('#payment-container');
       if (container) {
         container.removeEventListener('keydown', handleArrowKeyNavigation);
+        container.removeEventListener('keydown', handleEnterKey);
       }
     }
   });
@@ -177,6 +183,12 @@ async function abrirModal() {
     await procesarVenta(); // Llama a la función para procesar la venta
   } else {
     cerrarModal();
+  }
+}
+function handleEnterKey(event) {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    Swal.clickConfirm(); // Simula hacer clic en el botón Confirmar Pago
   }
 }
 
@@ -190,6 +202,9 @@ async function procesarVenta() {
     });
 
     console.log('Venta procesada:', response.data);
+
+    emit('venta-procesada'); // Emitir el evento aquí
+
 
     Swal.fire({
       title: 'Éxito',

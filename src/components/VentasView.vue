@@ -12,16 +12,22 @@
       <SumaVenta :productos="productos" />
       <BotonVenta :productos="productos" @venta-procesada="limpiarProductos" />
     </div>
-    <FormaCobro ref="formaCobro" :totalVenta="totalVenta" @confirm-payment="procesarVenta" :productos="productos" />
-  </section>
+    <FormaCobro
+        ref="formaCobro"
+        :totalVenta="totalVenta"
+        @confirm-payment="procesarVenta"
+        :productos="productos"
+        @venta-procesada="limpiarProductos"
+    />  </section>
 </template>
 
 <script>
+import { ref, computed } from 'vue';
 import InputProducto from '@/components/ventas/InputProducto.vue';
 import ListaProductos from '@/components/ventas/ListaProductos.vue';
 import BotonVenta from "@/components/ventas/BotonVenta.vue";
 import SumaVenta from "@/components/ventas/SumaVenta.vue";
-import FormaCobro from '@/components/ventas/FormaCobro.vue'; // Asegúrate de que la ruta sea correcta
+import FormaCobro from '@/components/ventas/FormaCobro.vue';
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -32,47 +38,49 @@ export default {
     ListaProductos,
     BotonVenta,
     SumaVenta,
-    FormaCobro, // Registrar el componente
+    FormaCobro,
   },
-  data() {
-    return {
-      productos: []
-    };
-  },
-  computed: {
-    totalVenta() {
-      return this.productos.reduce((acc, producto) => acc + producto.subtotal, 0);
-    }
-  },
-  methods: {
-    agregarProducto(producto) {
-      const productoExistente = this.productos.find((p) => p.codigo === producto.codigo);
+  setup() {
+    const productos = ref([]);
+    const inputProducto = ref(null);
+    const formaCobro = ref(null);
+
+    const totalVenta = computed(() => {
+      return productos.value.reduce((acc, producto) => acc + producto.subtotal, 0);
+    });
+
+    function agregarProducto(producto) {
+      const productoExistente = productos.value.find((p) => p.codigo === producto.codigo);
       if (productoExistente) {
         productoExistente.cantidad += 1;
         productoExistente.subtotal = productoExistente.precio * productoExistente.cantidad;
       } else {
         producto.cantidad = 1;
         producto.subtotal = producto.precio;
-        this.productos.push(producto);
+        productos.value.push(producto);
       }
-    },
-    actualizarProducto(index, cantidad) {
-      const producto = this.productos[index];
+    }
+
+    function actualizarProducto(index, cantidad) {
+      const producto = productos.value[index];
       producto.cantidad = cantidad;
       producto.subtotal = producto.precio * cantidad;
-    },
-    limpiarProductos() {
-      this.productos = []; // Limpiar la lista de productos
-      this.$refs.inputProducto.focusInput(); // Llamar al método focusInput del componente hijo
-    },
-    focusInput() {
-      this.$refs.inputProducto.focusInput(); // Llamar al método focusInput del componente InputProducto
-    },
-    abrirModal() {
-      const formaCobro = this.$refs.formaCobro; // Obtener referencia a FormaCobro
-      formaCobro.abrirModal(); // Llamar al método para abrir el modal
-    },
-    async procesarVenta(data) {
+    }
+
+    function limpiarProductos() {
+      productos.value = [];
+      inputProducto.value.focusInput();
+    }
+
+    function focusInput() {
+      inputProducto.value.focusInput();
+    }
+
+    function abrirModal() {
+      formaCobro.value.abrirModal();
+    }
+
+    async function procesarVenta(data) {
       try {
         const response = await axios.post('http://localhost:5000/ventas/procesar', {
           productos: data.productos,
@@ -87,7 +95,9 @@ export default {
           icon: 'success'
         });
 
-        this.limpiarProductos(); // Limpiar productos después de procesar
+        limpiarProductos();
+        // Emit the event after successful processing
+        formaCobro.value.$emit('venta-procesada');
       } catch (error) {
         console.error('Error al procesar la venta:', error);
 
@@ -98,6 +108,19 @@ export default {
         });
       }
     }
+
+    return {
+      productos,
+      totalVenta,
+      inputProducto,
+      formaCobro,
+      agregarProducto,
+      actualizarProducto,
+      limpiarProductos,
+      focusInput,
+      abrirModal,
+      procesarVenta,
+    };
   },
 }
 </script>
@@ -105,21 +128,21 @@ export default {
 <style scoped>
 .flex {
   display: flex;
-  height: 37vh; /* O ajusta según sea necesario */
+  height: 37vh;
 }
 
 .izquierda {
-  width: 66.67%; /* 2/3 de la pantalla */
+  width: 66.67%;
   padding: 20px;
   box-sizing: border-box;
 }
 
 .derecha {
-  width: 33.33%; /* 1/3 de la pantalla */
+  width: 33.33%;
   padding: 20px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Centra verticalmente */
+  justify-content: center;
 }
 </style>
