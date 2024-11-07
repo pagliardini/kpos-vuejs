@@ -4,6 +4,7 @@
 </template>
 
 <script setup>
+import './FormaCobro.css'
 import { ref, defineExpose, defineProps, defineEmits } from 'vue';
 import Swal from 'sweetalert2';
 import axios from 'axios';

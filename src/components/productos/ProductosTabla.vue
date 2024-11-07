@@ -40,7 +40,7 @@ export default {
       productos: [],
       searchQuery: '',
       currentPage: 1,
-      itemsPerPage: 10,
+      itemsPerPage: 15,
       selectedIndex: null, // Track the selected row index
       inputFocused: false, // Track if the input is focused
     };

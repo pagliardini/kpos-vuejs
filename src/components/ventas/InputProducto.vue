@@ -64,7 +64,3 @@ onMounted(() => {
 
 defineExpose({focusInput});
 </script>
-
-<style scoped>
-/* Estilos específicos para InputProducto */
-</style>

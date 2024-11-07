@@ -34,7 +34,7 @@
       </tbody>
     </table>
 
-    <div v-if="showModal" class="modal">
+    <div v-if="showModal" class="modal-cantidad">
       <div class="modal-content">
         <span class="close" @click="closeModal">&times;</span>
         <h2>Ingresa la nueva cantidad</h2>
@@ -143,5 +143,20 @@ export default {
 </script>
 
 <style scoped>
-
+/* Ajuste del ancho específico para las columnas */
+th:nth-child(1), td:nth-child(1) { /* Columna "Código" */
+  width: 15%; /* Ancho reducido */
+}
+th:nth-child(2), td:nth-child(2) { /* Columna "Nombre" */
+  width: 40%; /* Ancho ampliado para mostrar más texto */
+}
+th:nth-child(3), td:nth-child(3) { /* Columna "Precio" */
+  width: 8%;
+}
+th:nth-child(4), td:nth-child(4) { /* Columna "Cantidad" */
+  width: 10%;
+}
+th:nth-child(5), td:nth-child(5) { /* Columna "Subtotal" */
+  width: 5%;
+}
 </style>

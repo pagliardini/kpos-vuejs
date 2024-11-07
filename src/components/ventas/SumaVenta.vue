@@ -22,7 +22,7 @@ export default {
   },
   methods: {
     formatCurrency(value) {
-      // Convierte el número a una cadena con formato
+      // para convertir el número a cadena con formato
       const options = {minimumFractionDigits: 2, maximumFractionDigits: 2};
       const formattedValue = new Intl.NumberFormat('es-CO', options).format(value);
       return `$${formattedValue}`;

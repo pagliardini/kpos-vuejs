@@ -8,9 +8,11 @@
 }
 
 .fixed-width {
-  width: 800px;
+  width: 900px;
   table-layout: fixed;
+  height: 500px;
 }
+
 
 .table th, .table td {
   height: 20px;

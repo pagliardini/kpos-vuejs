@@ -169,7 +169,7 @@ body {
 .flex {
   display: flex;
   height: auto; /* Cambio a auto para permitir flexibilidad */
-  min-height: 500px; /* Altura mínima para asegurar espacio */
+  min-height: 400px; /* Altura mínima para asegurar espacio */
   margin: 20px;
   border-radius: 8px; /* Bordes redondeados */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
