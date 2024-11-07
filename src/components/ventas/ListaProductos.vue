@@ -33,28 +33,12 @@
       </tr>
       </tbody>
     </table>
-
-    <div v-if="showModal" class="modal-cantidad">
-      <div class="modal-content">
-        <span class="close" @click="closeModal">&times;</span>
-        <h2>Ingresa la nueva cantidad</h2>
-        <input
-            type="text"
-            v-model="newQuantity"
-            placeholder="Cantidad"
-            class="form-control"
-            ref="quantityInput"
-            @keyup.enter="updateQuantity"
-        />
-        <button class="btn btn-primary" @click="updateQuantity">Actualizar</button>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
-
-import './ListaProductos.css'
+import Swal from 'sweetalert2';
+import './ListaProductos.css';
 
 export default {
   props: {
@@ -63,9 +47,17 @@ export default {
   data() {
     return {
       selectedIndex: 0,
-      showModal: false,
-      newQuantity: 1,
     };
+  },
+  watch: {
+    productos(newVal, oldVal) {
+      if (newVal.length > oldVal.length) {
+        // Establece selectedIndex en el último producto agregado y usa nextTick para asegurar el cambio visual
+        this.$nextTick(() => {
+          this.selectedIndex = newVal.length - 1;
+        });
+      }
+    },
   },
   methods: {
     selectNext() {
@@ -80,6 +72,7 @@ export default {
     },
     selectProduct(index) {
       this.selectedIndex = index;
+      this.openModal();
     },
     handleKeyDown(event) {
       if (event.key === 'ArrowDown') {
@@ -89,46 +82,50 @@ export default {
       } else if (event.key === '*') {
         event.preventDefault();
         this.openModal();
-      } else if (event.key === 'Delete') { // Detectar Supr o Backspace
-        event.preventDefault(); // Evitar el comportamiento predeterminado
-        this.deleteProduct(); // Llamar al método para eliminar el producto
+      } else if (event.key === 'Delete') {
+        event.preventDefault();
+        this.deleteProduct();
       }
     },
     openModal() {
-      this.showModal = true;
-      this.newQuantity = this.productos[this.selectedIndex]?.cantidad || 1;
-
-      this.$nextTick(() => {
-        this.$refs.quantityInput.focus();
-        this.$refs.quantityInput.select();
-      });
-    },
-    closeModal() {
-      this.showModal = false;
-      this.$emit('modal-closed');
-    },
-    updateQuantity() {
       const product = this.productos[this.selectedIndex];
-      if (product) {
-        const parsedQuantity = parseInt(this.newQuantity, 10);
-        if (!isNaN(parsedQuantity)) {
-          product.cantidad = parsedQuantity;
-          product.subtotal = product.precio * parsedQuantity;
-          this.$emit('actualizar-producto', this.selectedIndex, product.cantidad);
+      Swal.fire({
+        title: 'Ingresa la nueva cantidad',
+        input: 'number',
+        inputValue: product.cantidad,
+        inputAttributes: {
+          min: 1,
+        },
+        showCancelButton: true,
+        confirmButtonText: 'Actualizar',
+        cancelButtonText: 'Cancelar',
+        preConfirm: (inputValue) => {
+          const parsedQuantity = parseInt(inputValue, 10);
+          if (!isNaN(parsedQuantity) && parsedQuantity > 0) {
+            product.cantidad = parsedQuantity;
+            product.subtotal = product.precio * parsedQuantity;
+            this.$emit('actualizar-producto', this.selectedIndex, product.cantidad);
+            return true;
+          } else {
+            Swal.showValidationMessage('Por favor ingresa una cantidad válida');
+            return false;
+          }
         }
-      }
-      this.closeModal();
+      }).then(() => {});
+      setTimeout(() => {
+        const inputElement = document.querySelector('.swal2-input');
+        if (inputElement) {
+          inputElement.select();
+        }
+      }, 100);
     },
     deleteProduct() {
-      // Emitir un evento al componente padre para eliminar el producto
       if (this.productos.length > 0 && this.selectedIndex >= 0) {
         this.$emit('eliminar-producto', this.selectedIndex);
-
-        // Ajustar el índice seleccionado si es necesario
         if (this.selectedIndex >= this.productos.length) {
-          this.selectedIndex = this.productos.length - 1; // Seleccionar el último producto si se eliminó el actual
+          this.selectedIndex = this.productos.length - 1;
         } else if (this.productos.length === 0) {
-          this.selectedIndex = -1; // No hay productos, restablecer índice
+          this.selectedIndex = -1;
         }
       }
     },
@@ -144,19 +141,23 @@ export default {
 
 <style scoped>
 /* Ajuste del ancho específico para las columnas */
-th:nth-child(1), td:nth-child(1) { /* Columna "Código" */
-  width: 15%; /* Ancho reducido */
+th:nth-child(1), td:nth-child(1) {
+  width: 15%;
 }
-th:nth-child(2), td:nth-child(2) { /* Columna "Nombre" */
-  width: 40%; /* Ancho ampliado para mostrar más texto */
+
+th:nth-child(2), td:nth-child(2) {
+  width: 40%;
 }
-th:nth-child(3), td:nth-child(3) { /* Columna "Precio" */
+
+th:nth-child(3), td:nth-child(3) {
   width: 8%;
 }
-th:nth-child(4), td:nth-child(4) { /* Columna "Cantidad" */
+
+th:nth-child(4), td:nth-child(4) {
   width: 10%;
 }
-th:nth-child(5), td:nth-child(5) { /* Columna "Subtotal" */
+
+th:nth-child(5), td:nth-child(5) {
   width: 5%;
 }
 </style>

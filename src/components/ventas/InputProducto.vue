@@ -43,6 +43,8 @@ async function buscarProducto() {
   }
 }
 
+
+
 function handleEnter() {
   if (codigo.value.trim() === '') {
     emit('abrir-modal'); // Emitir evento para abrir el modal si el input está vacío
