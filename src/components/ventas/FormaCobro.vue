@@ -105,7 +105,7 @@ async function abrirModal() {
     html: `
       <div class="flex justify-between items-center mb-4">
         <h1 class="text-xl font-bold total-pagar">Total a Pagar: ${formatCurrency(props.totalVenta)}</h1>
-        <div class="text-lg font-semibold">
+        <div class="text-xl font-semibold">
           <strong>Vuelto:</strong> <span id="change-amount">${formatCurrency(changeAmount.value)}</span>
         </div>
       </div>
@@ -120,7 +120,7 @@ async function abrirModal() {
           </thead>
           <tbody>
             ${paymentMethods.value.map((method, index) => `
-              <tr class="hover:bg-gray-100 transition duration-200">
+              <tr class="hover:bg-gray-300 transition duration-200">
                 <td class="py-2 px-4 border-b">${method.denominacion}</td>
                 <td class="py-2 px-4 border-b">${method.recargo}%</td>
                 <td class="py-2 px-4 border-b">
@@ -239,11 +239,5 @@ defineExpose({ abrirModal });
 </script>
 
 <style>
-.selected {
-  background-color: #cce5ff;
-}
 
-.total-pagar {
-  font-weight: bolder;
-}
 </style>
