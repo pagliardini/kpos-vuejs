@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="contenedor-input-boton">
     <input
         ref="codigoInput"
         type="text"
@@ -8,16 +8,19 @@
         placeholder="Ingresa el código del producto"
         class="input-producto"
     />
+    <button class="boton-buscar" @click="buscarProducto">
+      <i class="pi pi-search"></i> ...
+    </button>
   </div>
 </template>
 
 <script setup>
-import './InputProducto.css'
-import { ref, defineEmits, defineExpose, onMounted} from 'vue';
+import './InputProducto.css';
+import { ref, defineEmits, defineExpose, onMounted } from 'vue';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-const emit = defineEmits(['producto-agregado', 'abrir-modal']); // Agregar el evento para abrir el modal
+const emit = defineEmits(['producto-agregado', 'abrir-modal']);
 const codigo = ref('');
 
 async function buscarProducto() {
@@ -34,7 +37,7 @@ async function buscarProducto() {
           title: 'Código no encontrado',
           text: `El código ingresado "${codigo.value}" no existe.`,
         }).then(() => {
-          codigo.value = ''; // Limpiar el input después de mostrar el popup
+          codigo.value = '';
         });
       } else {
         console.error('Error al buscar el producto:', error);
@@ -43,13 +46,11 @@ async function buscarProducto() {
   }
 }
 
-
-
 function handleEnter() {
   if (codigo.value.trim() === '') {
-    emit('abrir-modal'); // Emitir evento para abrir el modal si el input está vacío
+    emit('abrir-modal');
   } else {
-    buscarProducto(); // Si hay código, buscar producto
+    buscarProducto();
   }
 }
 
@@ -64,5 +65,9 @@ onMounted(() => {
   focusInput();
 });
 
-defineExpose({focusInput});
+defineExpose({ focusInput });
 </script>
+
+<style scoped>
+
+</style>

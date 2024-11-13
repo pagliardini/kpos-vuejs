@@ -4,7 +4,7 @@ import router from './router';
 
 // Import Tailwind's CSS (this is necessary to enable Tailwind styling)
 import './assets/main.css';  // <-- Add this line to import Tailwind
-
+import 'primeicons/primeicons.css';
 // Crear la instancia de la aplicación Vue
 const app = createApp(App);
 

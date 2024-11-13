@@ -1,8 +1,32 @@
+.contenedor-input-boton {
+  display: flex;
+  width: 100%;
+}
+
 .input-producto {
-  width: 50%;
-  padding: 5px;
-  background-color: rgba(0, 0 ,0 ,0); /* Color de fondo */
-  color: black; /* Color del texto */
-  border: 1px solid black; /* Borde de 2px, sólido y negro */
-  cursor: pointer; /* Cambia el cursor al pasar por encima */
+  width: 90% !important;
+  padding: 1px;
+  background-color: rgba(0, 0, 0, 0);
+  color: black;
+  border: 1px solid black;
+  border-radius: 4px 0 0 4px; /* Bordes redondeados solo en la izquierda */
+}
+
+.boton-buscar {
+  width: 10%;
+  padding: 1px 1px;
+  background-color: #1f2937;
+  color: white;
+  border: none;
+  border-radius: 0 4px 4px 0; /* Bordes redondeados solo en la derecha */
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.boton-buscar:hover {
+  background-color: #c72333;
+}
+
+.boton-buscar:active {
+  background-color: #bc2130;
 }
