@@ -8,6 +8,8 @@
           @eliminar-producto="eliminarProducto"
       @modal-closed="focusInput"
       />
+      <button @click="showModal">Abrir Modal de Productos</button>
+      <BuscarPorNombre ref="productosModal" />
     </div>
     <div class="derecha">
       <SumaVenta :productos="productos" />
@@ -34,16 +36,23 @@ import SumaVenta from "@/components/ventas/SumaVenta.vue";
 import FormaCobro from '@/components/ventas/FormaCobro.vue';
 import BotonCancelar from "@/components/ventas/BotonCancelar.vue";
 import axios from "axios";
+import BuscarPorNombre from "@/components/ventas/BuscarPorNombre.vue";
 
 export default {
   name: 'VentasView',
   components: {
+    BuscarPorNombre,
     BotonCancelar,
     InputProducto,
     ListaProductos,
     BotonVenta,
     SumaVenta,
     FormaCobro,
+  },
+  methods: {
+    showModal() {
+      this.$refs.productosModal.openModal()
+    }
   },
   setup() {
     const productos = ref([]);
