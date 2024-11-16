@@ -55,7 +55,7 @@ export default {
     },
     getModalHtml() {
       return `
-    <input id="searchInput" type="text" class="swal2-input" placeholder="Buscar por código o nombre">
+    <input id="searchInput" type="text" class="swal2-input" autocomplete="off" placeholder="Buscar por código o nombre">
     <div id="productListContainer" style="height: 300px; overflow-y: auto; margin-top: 10px;">
       <ul id="productList" style="list-style-type:none; padding:0;"></ul>
     </div>
