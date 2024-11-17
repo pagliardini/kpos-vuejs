@@ -8,7 +8,7 @@
         placeholder="Ingresa el código del producto"
         class="input-producto"
     />
-    <button class="boton-buscar" @click="buscarProducto">
+    <button class="boton-buscar" @click="handleSearch">
       <i class="pi pi-search"></i> ...
     </button>
   </div>
@@ -48,9 +48,18 @@ async function buscarProducto() {
 
 function handleEnter() {
   if (codigo.value.trim() === '') {
-    emit('abrir-modal');
+    emit('abrir-modal'); // Emitir evento para abrir el modal
   } else {
     buscarProducto();
+  }
+}
+
+// Nueva función para manejar la búsqueda o abrir el modal
+function handleSearch() {
+  if (codigo.value.trim() === '') {
+    emit('abrir-modal'); // Emitir evento para abrir el modal
+  } else {
+    buscarProducto(); // Buscar producto si hay un código ingresado
   }
 }
 
@@ -65,9 +74,9 @@ onMounted(() => {
   focusInput();
 });
 
-defineExpose({ focusInput });
+defineExpose({focusInput});
 </script>
 
 <style scoped>
-
+/* Estilos opcionales */
 </style>

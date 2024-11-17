@@ -1,14 +1,17 @@
 <template>
   <section class="p-6 flex">
     <div class="izquierda">
-      <InputProducto ref="inputProducto" @producto-agregado="agregarProducto" @abrir-modal="abrirModal" />
+      <InputProducto
+          ref="inputProducto"
+          @producto-agregado="agregarProducto"
+          @abrir-modal="showModal"
+      />
       <ListaProductos
           :productos="productos"
           @actualizar-producto="actualizarProducto"
           @eliminar-producto="eliminarProducto"
-      @modal-closed="focusInput"
+          @modal-closed="focusInput"
       />
-      <button @click="showModal">Abrir Modal de Productos</button>
       <BuscarPorNombre ref="productosModal" />
     </div>
     <div class="derecha">
