@@ -4,7 +4,9 @@
       <InputProducto
           ref="inputProducto"
           @producto-agregado="agregarProducto"
-          @abrir-modal="showModal"
+          @abrir-modal-cobro="abrirModalCobro"
+          @abrir-modal-busqueda="abrirModalBusqueda"
+
       />
       <ListaProductos
           :productos="productos"
@@ -61,6 +63,7 @@ export default {
     const productos = ref([]);
     const inputProducto = ref(null);
     const formaCobro = ref(null);
+    const productosModal = ref(null);
 
     const totalVenta = computed(() => {
       return productos.value.reduce((acc, producto) => acc + producto.subtotal, 0);
@@ -119,8 +122,17 @@ export default {
       inputProducto.value.focusInput();
     }
 
-    function abrirModal() {
+    function abrirModalCobro() {
       formaCobro.value.abrirModal();
+    }
+
+    function abrirModalBusqueda() {
+      console.log('Intentando abrir el modal de búsqueda');
+      if (productosModal.value) {
+        productosModal.value.openModal();
+      } else {
+        console.error('La referencia productosModal no está disponible');
+      }
     }
 
     async function procesarVenta(data) {
@@ -156,13 +168,15 @@ export default {
       totalVenta,
       inputProducto,
       formaCobro,
+      productosModal, // Asegúrate de exponer la referencia
       agregarProducto,
       actualizarProducto,
       eliminarProducto, // Exponer el método para eliminar productos
       limpiarProductos,
       focusInput,
-      abrirModal,
+      abrirModalCobro,
       procesarVenta,
+      abrirModalBusqueda,
     };
   },
 }

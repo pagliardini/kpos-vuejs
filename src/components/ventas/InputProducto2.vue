@@ -20,7 +20,7 @@ import { ref, defineEmits, defineExpose, onMounted } from 'vue';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-const emit = defineEmits(['producto-agregado', 'abrir-modal', 'abrir-modal-busqueda']);
+const emit = defineEmits(['producto-agregado', 'abrir-modal']);
 const codigo = ref('');
 
 async function buscarProducto() {
@@ -47,19 +47,18 @@ async function buscarProducto() {
 }
 
 function handleEnter() {
+  // Si no hay código, abrir el modal de forma de cobro
   if (codigo.value.trim() === '') {
-    emit('abrir-modal-cobro'); // Emitir evento para abrir el modal de forma de cobro
+    emit('abrir-modal'); // Emitir evento para abrir el modal de forma de cobro
   } else {
     buscarProducto(); // Buscar producto si hay un código ingresado
   }
 }
 
+// Nueva función para manejar la búsqueda o abrir el modal
 function handleSearch() {
-  console.log('Evento abrir-modal-busqueda emitido');
   if (codigo.value.trim() === '') {
-    emit('abrir-modal-busqueda');
-  } else {
-    buscarProducto();
+    emit('abrir-modal'); // Emitir evento para abrir el modal si no hay código
   }
 }
 

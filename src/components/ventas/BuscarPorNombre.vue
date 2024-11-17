@@ -29,6 +29,7 @@ export default {
       }
     },
     openModal() {
+      console.log('openModal ejecutado');
       this.fetchProductos(); // Cargar productos al abrir el modal
       Swal.fire({
         title: 'Selecciona un Producto',
